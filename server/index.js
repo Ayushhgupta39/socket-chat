@@ -17,12 +17,17 @@ const server = app.listen(PORT, () => {
 
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173"
+        origin: "*",
     }
 });
 
 io.on("connection", (socket) => {
     console.log(`New Socket connection: ${socket.id}`);
+
+    socket.on("chat", (payload) => {
+        console.log("What is payload? ", payload);
+        io.emit("chat", payload)
+    })
     
     socket.on("disconnect", () => {
         console.log(`User disconnected: ${socket.id}`);
